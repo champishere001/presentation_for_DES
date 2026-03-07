@@ -1,835 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Jamabandi + Rules → SQLite DB (Browser)</title>
-
-  <!-- PDF.js -->
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-
-  <!-- sql.js -->
-  <script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js"></script>
-
-  <style>
-    :root{
-      --bg:#060b16; --panel:#0b1327; --card:#0f1b33; --card2:#0d172c;
-      --border:#223458; --text:#e9eefc; --muted:#9fb0d0; --accent:#4cc9f0;
-      --good:#27c58b; --warn:#ffcc66; --bad:#ff6b8b;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
-    a{color:var(--accent);text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:16px}
-    .top{
-      display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px
-    }
-    h1{font-size:18px;margin:0}
-    .sub{color:var(--muted);font-size:13px;margin-top:4px}
-    .row{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:960px){ .row{grid-template-columns:1.1fr .9fr} }
-    .card{
-      background:linear-gradient(180deg,var(--card),var(--card2));
-      border:1px solid var(--border); border-radius:14px; padding:14px;
-      box-shadow:0 18px 70px rgba(0,0,0,.35);
-    }
-    .card h2{font-size:15px;margin:0 0 10px}
-    .line{height:1px;background:rgba(255,255,255,.06);margin:12px 0}
-    .btn{
-      background:#122448;border:1px solid var(--border); color:var(--text);
-      padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:700;
-    }
-    .btn:hover{border-color:rgba(76,201,240,.65)}
-    .btn.primary{background:rgba(76,201,240,.12);border-color:rgba(76,201,240,.55)}
-    .btn.danger{background:rgba(255,107,139,.08);border-color:rgba(255,107,139,.45)}
-    .btn:disabled{opacity:.55;cursor:not-allowed}
-    .pill{
-      font-size:12px;color:var(--muted);padding:6px 10px;border:1px solid rgba(255,255,255,.12);
-      border-radius:999px; display:inline-flex;gap:8px;align-items:center
-    }
-    .grid2{display:grid;grid-template-columns:1fr;gap:10px}
-    @media(min-width:700px){ .grid2{grid-template-columns:1fr 1fr} }
-    .field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
-    input[type="text"], textarea, select{
-      width:100%; background:#071127; border:1px solid var(--border); color:var(--text);
-      border-radius:12px; padding:10px 12px; outline:none;
-    }
-    textarea{min-height:140px;resize:vertical}
-    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    @media(min-width:700px){.kpi{grid-template-columns:repeat(4,1fr)}}
-    .kpi .box{background:#071127;border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:10px}
-    .kpi .t{color:var(--muted);font-size:12px}
-    .kpi .v{font-size:18px;font-weight:900;margin-top:4px}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-    .tab{padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--text);cursor:pointer}
-    .tab.active{border-color:rgba(76,201,240,.65);background:rgba(76,201,240,.10)}
-    .out{
-      background:#061024;border:1px solid rgba(255,255,255,.10);border-radius:14px;
-      padding:12px;white-space:pre-wrap; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size:12px; min-height:140px; overflow:auto
-    }
-    .mini{font-size:12px;color:var(--muted)}
-    .checks{display:flex;gap:10px;flex-wrap:wrap}
-    .chk{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
-    .rightTop{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSO Training Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', 'Noto Sans Devanagari', sans-serif; background: #f8fafc; }
+        .nav-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .nav-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .sidebar { transition: 0.3s ease-in-out; }
+    </style>
 </head>
+<body class="flex">
 
-<body>
-  <div class="wrap">
-    <div class="top">
-      <div>
-        <h1>Jamabandi + Rules → SQLite DB (Browser)</h1>
-        <div class="sub">
-          Load Rule PDF from GitHub → Upload Jamabandi → Import → Query → Download .db
-        </div>
-      </div>
-      <div class="rightTop">
-        <span class="pill" id="dbStatus">DB: loading...</span>
-        <button class="btn danger" id="newDbBtn" disabled>New DB</button>
-        <button class="btn" id="downloadDbBtn" disabled>Download DB</button>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="card">
-        <h2>1) Load Rule PDF from GitHub (Fixed)</h2>
-        <div class="mini">
-          This uses a fixed URL (GitHub Pages cannot list folders). Put your rule PDF at:
-          <b>/rules/jamabandi.pdf</b>
-        </div>
-        <div class="line"></div>
-        <div class="grid2">
-          <div class="field">
-            <label>Rule PDF URL (auto)</label>
-            <input id="ruleUrl" type="text" />
-          </div>
-          <div class="field" style="display:flex;align-items:end;gap:10px">
-            <button class="btn primary" id="loadRuleBtn" disabled>Load Rule PDF</button>
-            <span class="pill" id="rulePill">Rules: not loaded</span>
-          </div>
+    <aside class="w-64 bg-slate-900 h-screen sticky top-0 text-white p-6 hidden md:block">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="bg-blue-600 p-2 rounded-lg">
+                <i class="fas fa-chart-line text-xl"></i>
+            </div>
+            <h1 class="font-bold text-lg leading-tight">NSO Training<br><span class="text-blue-400 text-xs uppercase tracking-widest">Portal 2026</span></h1>
         </div>
 
-        <div class="line"></div>
+        <nav class="space-y-2">
+            <p class="text-slate-500 text-[10px] font-bold uppercase mb-4 tracking-widest">Navigation</p>
+            <a href="#" class="flex items-center gap-3 p-3 bg-blue-600 rounded-lg text-sm font-medium">
+                <i class="fas fa-home"></i> Dashboard Home
+            </a>
+            <a href="esigma.html" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg text-sm text-slate-400 hover:text-white transition">
+                <i class="fas fa-desktop"></i> e-SIGMA Portal
+            </a>
+            <a href="main.html" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg text-sm text-slate-400 hover:text-white transition">
+                <i class="fas fa-file-invoice"></i> PLFS Main (0.0PL)
+            </a>
+            <a href="main 2.html" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg text-sm text-slate-400 hover:text-white transition">
+                <i class="fas fa-layer-group"></i> PLFS Schedules
+            </a>
+            <a href="nic nco.html" class="flex items-center gap-3 p-3 hover:bg-slate-800 rounded-lg text-sm text-slate-400 hover:text-white transition">
+                <i class="fas fa-tags"></i> NIC & NCO Codes
+            </a>
+        </nav>
 
-        <h2>2) Upload Jamabandi PDF</h2>
-        <div class="grid2">
-          <div class="field">
-            <label>Select Jamabandi PDF</label>
-            <input id="jamFile" type="file" accept="application/pdf" />
-          </div>
-          <div class="field" style="display:flex;align-items:end;gap:10px;flex-wrap:wrap">
-            <button class="btn primary" id="importJamBtn" disabled>Import Jamabandi into DB</button>
-            <span class="pill" id="jamPill">Jamabandi: not imported</span>
-          </div>
+        <div class="absolute bottom-10 left-6 right-6 p-4 bg-slate-800 rounded-xl border border-slate-700">
+            <p class="text-[10px] text-slate-400 uppercase font-bold mb-2">Current Region</p>
+            <p class="text-sm font-semibold text-blue-400 italic">Shimla, HP</p>
+        </div>
+    </aside>
+
+    <main class="flex-1 min-h-screen p-4 md:p-10">
+        
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-3xl font-black text-slate-800">Survey Training Modules</h2>
+                <p class="text-slate-500">Select a module below to launch the presentation or data portal.</p>
+            </div>
+            <div class="bg-white p-2 rounded-full shadow-sm border px-4 flex items-center gap-3">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-xs font-bold text-slate-600 uppercase">Field Ready</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div onclick="window.location.href='esigma.html'" class="nav-card bg-white p-6 rounded-2xl border-b-4 border-blue-600 shadow-sm">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-laptop-code text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 mb-1">e-SIGMA</h3>
+                <p class="text-xs text-slate-500 mb-4">User Management & Task Allocation</p>
+                <span class="text-blue-600 text-xs font-bold uppercase flex items-center gap-2">
+                    Open Module <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+
+            <div onclick="window.location.href='main.html'" class="nav-card bg-white p-6 rounded-2xl border-b-4 border-orange-500 shadow-sm">
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-clipboard-list text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 mb-1">PLFS 2025</h3>
+                <p class="text-xs text-slate-500 mb-4">Schedule 0.0PL Fundamentals</p>
+                <span class="text-orange-600 text-xs font-bold uppercase flex items-center gap-2">
+                    Open Module <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+
+            <div onclick="window.location.href='main 2.html'" class="nav-card bg-white p-6 rounded-2xl border-b-4 border-indigo-600 shadow-sm">
+                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-book text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 mb-1">Detailed Schedules</h3>
+                <p class="text-xs text-slate-500 mb-4">Slides 11-20 (Technical Training)</p>
+                <span class="text-indigo-600 text-xs font-bold uppercase flex items-center gap-2">
+                    Open Module <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+
+            <div onclick="window.location.href='nic nco.html'" class="nav-card bg-white p-6 rounded-2xl border-b-4 border-emerald-600 shadow-sm">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas fa-search text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 mb-1">NIC & NCO</h3>
+                <p class="text-xs text-slate-500 mb-4">Industry & Occupation Codes</p>
+                <span class="text-emerald-600 text-xs font-bold uppercase flex items-center gap-2">
+                    Open Module <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+
         </div>
 
-        <div class="line"></div>
-
-        <div class="checks">
-          <label class="chk"><input type="checkbox" id="hindiMode" checked /> Hindi Mode (Jamabandi)</label>
-          <label class="chk"><input type="checkbox" id="detectHeadings" checked /> Detect headings</label>
-          <label class="chk"><input type="checkbox" id="extractKhasraOwners" checked /> Extract khasra/owners</label>
-        </div>
-
-        <div class="line"></div>
-
-        <div class="kpi">
-          <div class="box"><div class="t">Rules lines</div><div class="v" id="kpiRules">0</div></div>
-          <div class="box"><div class="t">Jamabandi lines</div><div class="v" id="kpiJam">0</div></div>
-          <div class="box"><div class="t">Owners found</div><div class="v" id="kpiOwners">0</div></div>
-          <div class="box"><div class="t">Khasra found</div><div class="v" id="kpiKhasra">0</div></div>
-        </div>
-
-        <div class="line"></div>
-
-        <div class="mini">
-          Note: GitHub file preview may show “Unable to render code block” for PDFs — that is normal.
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>3) Fetch / Query Logic</h2>
-        <div class="tabs">
-          <button class="tab active" data-tab="heading">By Heading</button>
-          <button class="tab" data-tab="owner">By Owner</button>
-          <button class="tab" data-tab="khasra">By Khasra</button>
-          <button class="tab" data-tab="sql">SQL</button>
-        </div>
-
-        <div id="panel-heading">
-          <div class="field">
-            <label>Heading key (e.g., जमाबंदी / खसरा / मालिक / 121)</label>
-            <input id="qHeading" type="text" placeholder="Type a keyword..." />
-          </div>
-        </div>
-
-        <div id="panel-owner" style="display:none">
-          <div class="field">
-            <label>Owner name keyword (Hindi/English)</label>
-            <input id="qOwner" type="text" placeholder="e.g., Narender / नरेन्द्र" />
-          </div>
-        </div>
-
-        <div id="panel-khasra" style="display:none">
-          <div class="field">
-            <label>Khasra number (exact or partial)</label>
-            <input id="qKhasra" type="text" placeholder="e.g., 1825" />
-          </div>
-        </div>
-
-        <div id="panel-sql" style="display:none">
-          <div class="field">
-            <label>SQL Query</label>
-            <textarea id="qSql" spellcheck="false">SELECT 'rules' AS table_name, COUNT(*) AS rows FROM rules
-UNION ALL
-SELECT 'jamabandi_lines', COUNT(*) FROM jamabandi_lines
-UNION ALL
-SELECT 'owners', COUNT(*) FROM owners
-UNION ALL
-SELECT 'khasra_refs', COUNT(*) FROM khasra_refs;</textarea>
-          </div>
-          <div class="mini">
-            Tables: <b>rules</b>, <b>jamabandi_lines</b>, <b>owners</b>, <b>khasra_refs</b>, <b>meta</b>
-          </div>
-        </div>
-
-        <div class="line"></div>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn primary" id="fetchBtn" disabled>Fetch</button>
-          <button class="btn" id="clearOutBtn">Clear</button>
-        </div>
-
-        <div class="line"></div>
-
-        <div class="out" id="output">No DB loaded yet.</div>
-
-        <div class="line"></div>
-
-        <h2>DB Summary</h2>
-        <div class="out" id="summary" style="min-height:90px">No DB loaded yet.</div>
-      </div>
-    </div>
-
-    <div class="sub" style="margin-top:12px">
-      GitHub Pages = static. Rule PDFs load via <code>fetch()</code> from your repo (raw.githubusercontent.com).
-    </div>
-  </div>
-
-<script>
-/* =========================
-   CONFIG (EDIT ONLY THIS)
-========================= */
-// Your repo + file path (fixed)
-const GITHUB_USER = "champishere001";
-const REPO_NAME = "revenue-record";
-const BRANCH = "main";
-const RULE_PDF_PATH = "rules/jamabandi.pdf";
-
-// Fixed RAW URL (best for PDF fetch on Pages)
-const RULE_PDF_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/${BRANCH}/${RULE_PDF_PATH}`;
-
-/* =========================
-   GLOBALS
-========================= */
-let SQL = null;
-let db = null;
-let ruleLoaded = false;
-let jamLoaded = false;
-
-// pdf.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-
-/* =========================
-   UI Helpers
-========================= */
-const $ = (id)=>document.getElementById(id);
-function setStatus(text, ok=null){
-  const el = $("dbStatus");
-  el.textContent = text;
-  el.style.borderColor = ok===true ? "rgba(39,197,139,.6)" : ok===false ? "rgba(255,107,139,.6)" : "rgba(255,255,255,.12)";
-}
-function pill(el, text, ok=null){
-  el.textContent = text;
-  el.style.borderColor = ok===true ? "rgba(39,197,139,.6)" : ok===false ? "rgba(255,107,139,.6)" : "rgba(255,255,255,.12)";
-}
-function outPrint(str){
-  const o = $("output");
-  o.textContent = (o.textContent && o.textContent !== "No DB loaded yet.") ? (o.textContent + "\n\n" + str) : str;
-}
-function outSet(str){ $("output").textContent = str; }
-function summarySet(str){ $("summary").textContent = str; }
-function fmtRows(rows){
-  if(!rows || !rows.length) return "(no rows)";
-  const keys = Object.keys(rows[0]);
-  const lines = [];
-  lines.push(keys.join(" | "));
-  lines.push(keys.map(()=> "---").join(" | "));
-  for(const r of rows){
-    lines.push(keys.map(k => String(r[k] ?? "")).join(" | "));
-  }
-  return lines.join("\n");
-}
-
-/* =========================
-   SQLite Schema
-========================= */
-function initSchema(){
-  db.run(`
-    PRAGMA foreign_keys=ON;
-
-    CREATE TABLE IF NOT EXISTS meta(
-      key TEXT PRIMARY KEY,
-      value TEXT
-    );
-
-    CREATE TABLE IF NOT EXISTS rules(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      source TEXT DEFAULT 'rules_pdf',
-      page INTEGER,
-      line_no INTEGER,
-      heading TEXT,
-      text TEXT
-    );
-
-    CREATE INDEX IF NOT EXISTS idx_rules_text ON rules(text);
-    CREATE INDEX IF NOT EXISTS idx_rules_heading ON rules(heading);
-
-    CREATE TABLE IF NOT EXISTS jamabandi_lines(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      page INTEGER,
-      line_no INTEGER,
-      heading TEXT,
-      text TEXT
-    );
-    CREATE INDEX IF NOT EXISTS idx_jam_text ON jamabandi_lines(text);
-    CREATE INDEX IF NOT EXISTS idx_jam_heading ON jamabandi_lines(heading);
-
-    CREATE TABLE IF NOT EXISTS owners(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      owner_name TEXT,
-      share_raw TEXT,
-      percent_raw TEXT,
-      page INTEGER,
-      line_no INTEGER,
-      context TEXT
-    );
-    CREATE INDEX IF NOT EXISTS idx_owner_name ON owners(owner_name);
-
-    CREATE TABLE IF NOT EXISTS khasra_refs(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      khasra_no TEXT,
-      page INTEGER,
-      line_no INTEGER,
-      context TEXT
-    );
-    CREATE INDEX IF NOT EXISTS idx_khasra_no ON khasra_refs(khasra_no);
-  `);
-}
-
-/* =========================
-   SQL Helpers
-========================= */
-function execSelect(sql, params=[]){
-  const stmt = db.prepare(sql);
-  stmt.bind(params);
-  const rows = [];
-  while(stmt.step()){
-    rows.push(stmt.getAsObject());
-  }
-  stmt.free();
-  return rows;
-}
-function execRun(sql, params=[]){
-  const stmt = db.prepare(sql);
-  stmt.bind(params);
-  stmt.step();
-  stmt.free();
-}
-function dbSummary(){
-  const rows = execSelect(`
-    SELECT
-      (SELECT COUNT(*) FROM rules) AS rules_rows,
-      (SELECT COUNT(*) FROM jamabandi_lines) AS jam_rows,
-      (SELECT COUNT(*) FROM owners) AS owners_rows,
-      (SELECT COUNT(*) FROM khasra_refs) AS khasra_rows
-  `);
-  const r = rows[0] || {rules_rows:0,jam_rows:0,owners_rows:0,khasra_rows:0};
-  $("kpiRules").textContent = r.rules_rows;
-  $("kpiJam").textContent = r.jam_rows;
-  $("kpiOwners").textContent = r.owners_rows;
-  $("kpiKhasra").textContent = r.khasra_rows;
-
-  summarySet(
-`Rules lines: ${r.rules_rows}
-Jamabandi lines: ${r.jam_rows}
-Owners found: ${r.owners_rows}
-Khasra found: ${r.khasra_rows}
-
-Rule loaded: ${ruleLoaded ? "YES" : "NO"}
-Jamabandi imported: ${jamLoaded ? "YES" : "NO"}`
-  );
-}
-
-/* =========================
-   PDF Text Extract
-========================= */
-function normalizeText(s){
-  return (s || "")
-    .replace(/\u00A0/g, " ")
-    .replace(/[ \t]+/g, " ")
-    .replace(/\s+\n/g, "\n")
-    .trim();
-}
-
-// Basic heading detection (works for many rule manuals & jamabandi prints)
-function detectHeading(line){
-  const t = line.trim();
-  if(!t) return null;
-
-  // English chapter-like
-  if (/^(CHAPTER|Chapter)\s+[IVX0-9]+/i.test(t)) return t;
-
-  // Hindi-like: "अध्याय", "धारा", "खंड", "परिशिष्ट", "विषय"
-  if (/^(अध्याय|धारा|खंड|परिशिष्ट|विषय|अनुसूची)\b/.test(t)) return t;
-
-  // numbered heading (1. ... / 1) ...
-  if (/^\(?\d{1,3}\)?[.)-]\s+\S+/.test(t) && t.length <= 90) return t;
-
-  // ALL CAPS short lines (often headings)
-  if (t.length <= 60 && /^[A-Z0-9 ,.-]+$/.test(t) && /[A-Z]/.test(t)) return t;
-
-  return null;
-}
-
-// Owner & share extraction (best-effort; jamabandi formats vary)
-function extractOwnersFromLine(line){
-  const res = [];
-  const t = line.trim();
-  if(!t) return res;
-
-  // Hindi share patterns like "567/12096" or "567/40320"
-  const frac = t.match(/(\d{1,6})\s*\/\s*(\d{1,6})/);
-  // Percent pattern
-  const pct = t.match(/(\d{1,3}(?:\.\d+)?)\s*%/);
-
-  // Owner name: try capture Hindi/English words before share
-  // Examples: "Narender Singh 567/12096", "नरेन्द्र सिंह 567/12096"
-  let name = null;
-
-  // If fraction exists, take left side as candidate name
-  if(frac){
-    const left = t.slice(0, frac.index).trim();
-    // cleanup common separators
-    name = left.replace(/[:\-–—|]+$/g,"").trim();
-    // If very long, cut last 60 chars
-    if(name.length > 80) name = name.slice(-80).trim();
-    if(name.length < 2) name = null;
-  } else if(pct){
-    const left = t.slice(0, pct.index).trim();
-    name = left.replace(/[:\-–—|]+$/g,"").trim();
-    if(name.length > 80) name = name.slice(-80).trim();
-    if(name.length < 2) name = null;
-  }
-
-  // Some jamabandi lines have multiple owners separated by comma/space
-  if(name && (frac || pct)){
-    // Split cautiously by comma/; only if looks like list
-    const parts = name.split(/[;,]/).map(x=>x.trim()).filter(Boolean);
-    if(parts.length > 1){
-      for(const p of parts){
-        res.push({owner_name:p, share_raw: frac ? `${frac[1]}/${frac[2]}` : null, percent_raw: pct ? `${pct[1]}%` : null});
-      }
-    }else{
-      res.push({owner_name:name, share_raw: frac ? `${frac[1]}/${frac[2]}` : null, percent_raw: pct ? `${pct[1]}%` : null});
-    }
-  }
-  return res;
-}
-
-function extractKhasraFromLine(line){
-  const res = [];
-  const t = line.trim();
-  if(!t) return res;
-
-  // Common: "खसरा", "khasra", "Khasra No"
-  // capture numbers like 1825, 1825/1, 1825-1827
-  const rx = /(खसरा|khasra)\s*(no\.?|नं\.?|न\.?|number)?\s*[:\-–—]?\s*([0-9]{1,6}(?:\/[0-9]{1,3})?(?:\s*[-–]\s*[0-9]{1,6}(?:\/[0-9]{1,3})?)?)/ig;
-  let m;
-  while((m = rx.exec(t))){
-    res.push(m[3].replace(/\s+/g,""));
-  }
-
-  // Also sometimes khasra numbers appear in tables without keyword; optional light scan:
-  // If line contains "किस्म" / "रकबा" etc, try find 3-6 digit tokens.
-  if(res.length === 0 && /(रकबा|किस्म|मिन|min)/i.test(t)){
-    const nums = t.match(/\b[0-9]{3,6}(?:\/[0-9]{1,3})?\b/g);
-    if(nums) res.push(...nums.slice(0,6));
-  }
-
-  return [...new Set(res)];
-}
-
-async function pdfToLines(arrayBuffer){
-  const doc = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
-  const all = [];
-  for(let p=1;p<=doc.numPages;p++){
-    const page = await doc.getPage(p);
-    const content = await page.getTextContent();
-    const strings = content.items.map(i => i.str);
-    const text = normalizeText(strings.join("\n"));
-    const lines = text.split("\n").map(x=>x.trim()).filter(x=>x.length>0);
-    all.push({page:p, lines});
-  }
-  return all;
-}
-
-/* =========================
-   Import Rules PDF
-========================= */
-async function loadRulePdfFromGitHub(){
-  pill($("rulePill"), "Rules: loading...", null);
-  $("loadRuleBtn").disabled = true;
-
-  try{
-    const url = $("ruleUrl").value.trim();
-    const res = await fetch(url, {cache:"no-store"});
-    if(!res.ok) throw new Error("Rule PDF fetch failed: " + res.status);
-
-    const buf = await res.arrayBuffer();
-    const pages = await pdfToLines(buf);
-
-    // Reset old rules
-    db.run("DELETE FROM rules;");
-    db.run("DELETE FROM meta WHERE key LIKE 'rules_%';");
-
-    let currentHeading = null;
-    let lineCount = 0;
-
-    const ins = db.prepare("INSERT INTO rules(page,line_no,heading,text) VALUES(?,?,?,?)");
-
-    for(const pg of pages){
-      let ln = 0;
-      for(const rawLine of pg.lines){
-        ln++;
-        const maybeH = $("detectHeadings").checked ? detectHeading(rawLine) : null;
-        if(maybeH) currentHeading = maybeH;
-
-        ins.bind([pg.page, ln, currentHeading, rawLine]);
-        ins.step();
-        ins.reset();
-        lineCount++;
-      }
-    }
-    ins.free();
-
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('rules_url',?)", [url]);
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('rules_pages',?)", [String(pages.length)]);
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('rules_lines',?)", [String(lineCount)]);
-
-    ruleLoaded = true;
-    pill($("rulePill"), `Rules: loaded (${lineCount} lines)`, true);
-    outPrint(`✅ Rules imported from:\n${url}\nLines: ${lineCount}\nPages: ${pages.length}`);
-  }catch(e){
-    ruleLoaded = false;
-    pill($("rulePill"), "Rules: failed", false);
-    outPrint("❌ Rule load error: " + (e?.message || e));
-  }finally{
-    $("loadRuleBtn").disabled = false;
-    refreshButtons();
-    dbSummary();
-  }
-}
-
-/* =========================
-   Import Jamabandi PDF
-========================= */
-async function importJamabandi(){
-  const f = $("jamFile").files?.[0];
-  if(!f){ alert("Select Jamabandi PDF first."); return; }
-
-  pill($("jamPill"), "Jamabandi: importing...", null);
-  $("importJamBtn").disabled = true;
-
-  try{
-    const buf = await f.arrayBuffer();
-    const pages = await pdfToLines(buf);
-
-    // Reset old jamabandi
-    db.run("DELETE FROM jamabandi_lines;");
-    db.run("DELETE FROM owners;");
-    db.run("DELETE FROM khasra_refs;");
-    db.run("DELETE FROM meta WHERE key LIKE 'jam_%';");
-
-    let currentHeading = null;
-    let jamLines = 0;
-    let ownersFound = 0;
-    let khasraFound = 0;
-
-    const insLine = db.prepare("INSERT INTO jamabandi_lines(page,line_no,heading,text) VALUES(?,?,?,?)");
-    const insOwner = db.prepare("INSERT INTO owners(owner_name,share_raw,percent_raw,page,line_no,context) VALUES(?,?,?,?,?,?)");
-    const insKhasra = db.prepare("INSERT INTO khasra_refs(khasra_no,page,line_no,context) VALUES(?,?,?,?)");
-
-    const doHindi = $("hindiMode").checked;
-    const doHeading = $("detectHeadings").checked;
-    const doExtract = $("extractKhasraOwners").checked;
-
-    for(const pg of pages){
-      let ln = 0;
-      for(const rawLine of pg.lines){
-        ln++;
-        let line = rawLine;
-
-        // light cleanup for jamabandi
-        if(doHindi){
-          line = line.replace(/[|•]/g, " ").replace(/[ \t]+/g, " ").trim();
-        }
-
-        const maybeH = doHeading ? detectHeading(line) : null;
-        if(maybeH) currentHeading = maybeH;
-
-        insLine.bind([pg.page, ln, currentHeading, line]);
-        insLine.step(); insLine.reset();
-        jamLines++;
-
-        if(doExtract){
-          // Owners
-          const owners = extractOwnersFromLine(line);
-          for(const o of owners){
-            insOwner.bind([o.owner_name, o.share_raw, o.percent_raw, pg.page, ln, line]);
-            insOwner.step(); insOwner.reset();
-            ownersFound++;
-          }
-
-          // Khasra
-          const khasras = extractKhasraFromLine(line);
-          for(const k of khasras){
-            insKhasra.bind([k, pg.page, ln, line]);
-            insKhasra.step(); insKhasra.reset();
-            khasraFound++;
-          }
-        }
-      }
-    }
-
-    insLine.free(); insOwner.free(); insKhasra.free();
-
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('jam_filename',?)", [f.name]);
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('jam_pages',?)", [String(pages.length)]);
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('jam_lines',?)", [String(jamLines)]);
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('jam_owners_found',?)", [String(ownersFound)]);
-    execRun("INSERT OR REPLACE INTO meta(key,value) VALUES('jam_khasra_found',?)", [String(khasraFound)]);
-
-    jamLoaded = true;
-    pill($("jamPill"), `Jamabandi: imported (${jamLines} lines)`, true);
-    outPrint(`✅ Jamabandi imported:\n${f.name}\nLines: ${jamLines}\nPages: ${pages.length}\nOwners: ${ownersFound}\nKhasra: ${khasraFound}`);
-  }catch(e){
-    jamLoaded = false;
-    pill($("jamPill"), "Jamabandi: failed", false);
-    outPrint("❌ Jamabandi import error: " + (e?.message || e));
-  }finally{
-    $("importJamBtn").disabled = false;
-    refreshButtons();
-    dbSummary();
-  }
-}
-
-/* =========================
-   Query / Fetch
-========================= */
-function fetchQuery(){
-  const active = document.querySelector(".tab.active")?.dataset?.tab;
-
-  try{
-    if(!db) throw new Error("DB not ready yet.");
-
-    let rows = [];
-    if(active === "heading"){
-      const q = $("qHeading").value.trim();
-      if(!q) return outPrint("⚠️ Enter heading keyword.");
-      rows = execSelect(`
-        SELECT 'rules' AS src, page, line_no, heading, text
-        FROM rules
-        WHERE (heading LIKE ? OR text LIKE ?)
-        LIMIT 80
-      `, [`%${q}%`, `%${q}%`]);
-
-      const rows2 = execSelect(`
-        SELECT 'jamabandi' AS src, page, line_no, heading, text
-        FROM jamabandi_lines
-        WHERE (heading LIKE ? OR text LIKE ?)
-        LIMIT 80
-      `, [`%${q}%`, `%${q}%`]);
-
-      rows = rows.concat(rows2);
-      outPrint("🔎 Result (By Heading keyword):\n" + fmtRows(rows));
-      return;
-    }
-
-    if(active === "owner"){
-      const q = $("qOwner").value.trim();
-      if(!q) return outPrint("⚠️ Enter owner keyword.");
-      rows = execSelect(`
-        SELECT owner_name, share_raw, percent_raw, page, line_no, context
-        FROM owners
-        WHERE owner_name LIKE ? OR context LIKE ?
-        LIMIT 120
-      `, [`%${q}%`, `%${q}%`]);
-      outPrint("👤 Owners match:\n" + fmtRows(rows));
-      return;
-    }
-
-    if(active === "khasra"){
-      const q = $("qKhasra").value.trim();
-      if(!q) return outPrint("⚠️ Enter khasra number.");
-      rows = execSelect(`
-        SELECT khasra_no, page, line_no, context
-        FROM khasra_refs
-        WHERE khasra_no LIKE ? OR context LIKE ?
-        LIMIT 120
-      `, [`%${q}%`, `%${q}%`]);
-      outPrint("📌 Khasra match:\n" + fmtRows(rows));
-      return;
-    }
-
-    if(active === "sql"){
-      const sql = $("qSql").value.trim();
-      if(!sql) return outPrint("⚠️ Enter SQL.");
-      // Allow multiple statements; if SELECT, show last result set
-      // sql.js exec returns arrays with columns/values
-      const res = db.exec(sql);
-      if(!res || !res.length) return outPrint("✅ SQL executed (no result set).");
-
-      // Convert first result set to markdown-like
-      const r0 = res[0];
-      const cols = r0.columns;
-      const values = r0.values;
-
-      const out = [];
-      out.push(cols.join(" | "));
-      out.push(cols.map(()=> "---").join(" | "));
-      for(const v of values.slice(0,200)){
-        out.push(v.map(x => (x===null||x===undefined) ? "" : String(x)).join(" | "));
-      }
-      outPrint("🧾 SQL Result:\n" + out.join("\n"));
-      return;
-    }
-  }catch(e){
-    outPrint("❌ Fetch error: " + (e?.message || e));
-  }
-}
-
-/* =========================
-   Download DB
-========================= */
-function downloadDb(){
-  try{
-    const bin = db.export();
-    const blob = new Blob([bin], {type:"application/x-sqlite3"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "jamabandi_rules.db";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
-    outPrint("⬇️ Download started: jamabandi_rules.db");
-  }catch(e){
-    outPrint("❌ Download error: " + (e?.message || e));
-  }
-}
-
-/* =========================
-   New DB (reset)
-========================= */
-function newDb(){
-  if(!SQL) return;
-  db = new SQL.Database();
-  initSchema();
-  ruleLoaded = false;
-  jamLoaded = false;
-  pill($("rulePill"), "Rules: not loaded", null);
-  pill($("jamPill"), "Jamabandi: not imported", null);
-  outSet("✅ New DB created. Load Rule PDF and import Jamabandi.");
-  dbSummary();
-  refreshButtons();
-}
-
-/* =========================
-   Tabs
-========================= */
-function setTab(name){
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.classList.toggle("active", t.dataset.tab === name);
-  });
-  $("panel-heading").style.display = (name==="heading") ? "block" : "none";
-  $("panel-owner").style.display   = (name==="owner") ? "block" : "none";
-  $("panel-khasra").style.display  = (name==="khasra") ? "block" : "none";
-  $("panel-sql").style.display     = (name==="sql") ? "block" : "none";
-}
-
-/* =========================
-   Enable/disable buttons
-========================= */
-function refreshButtons(){
-  const ready = !!db;
-  $("newDbBtn").disabled = !ready;
-  $("downloadDbBtn").disabled = !ready;
-
-  $("loadRuleBtn").disabled = !ready;
-  $("importJamBtn").disabled = !ready;
-  $("fetchBtn").disabled = !ready;
-
-  // Slightly guide user:
-  if(ready){
-    setStatus("DB: ready", true);
-  }
-}
-
-/* =========================
-   Boot
-========================= */
-(async function boot(){
-  $("ruleUrl").value = RULE_PDF_URL;
-
-  // Tabs
-  document.querySelectorAll(".tab").forEach(btn=>{
-    btn.addEventListener("click", ()=>setTab(btn.dataset.tab));
-  });
-
-  // Buttons
-  $("clearOutBtn").addEventListener("click", ()=> outSet(""));
-  $("fetchBtn").addEventListener("click", fetchQuery);
-  $("downloadDbBtn").addEventListener("click", downloadDb);
-  $("newDbBtn").addEventListener("click", newDb);
-  $("loadRuleBtn").addEventListener("click", loadRulePdfFromGitHub);
-  $("importJamBtn").addEventListener("click", importJamabandi);
-
-  // Init SQL.js
-  setStatus("DB: loading...", null);
-  try{
-    SQL = await initSqlJs({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${file}`
-    });
-    newDb();
-  }catch(e){
-    setStatus("DB: failed", false);
-    outSet("❌ Failed to load sql.js: " + (e?.message || e));
-    return;
-  }
-
-  // Small UX: if user picks file enable import
-  $("jamFile").addEventListener("change", ()=>{
-    const has = $("jamFile").files?.length > 0;
-    if(has) pill($("jamPill"), "Jamabandi: file selected", null);
-  });
-
-  // First summary
-  dbSummary();
-  refreshButtons();
-})();
-</script>
+        <section class="mt-12 bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden">
+            <div class="relative z-10">
+                <h2 class="text-2xl font-bold mb-4">Survey Methodology Overview</h2>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <span class="text-blue-400 font-bold">01.</span>
+                            <p class="text-slate-300 text-sm leading-relaxed">The <strong>Rotational Panel Design</strong> requires 4 visits over 4 consecutive months to each selected household.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-blue-400 font-bold">02.</span>
+                            <p class="text-slate-300 text-sm leading-relaxed"><strong>Schedule 0.0PL</strong> is critical for house listing and proper stratification of employment types.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-2xl border border-white/10">
+                        <h4 class="text-sm font-bold mb-4 text-blue-300 uppercase tracking-tighter">Coding Tip</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed italic">
+                            Always distinguish between NIC (Industry - the 'Where') and NCO (Occupation - the 'What'). Mixing these leads to data rejection in the e-SIGMA scrutiny portal.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <i class="fas fa-globe absolute -right-10 -bottom-10 text-[200px] text-white/5 rotate-12"></i>
+        </section>
+
+    </main>
 </body>
-          </html>
+</html>
