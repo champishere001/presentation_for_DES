@@ -1,138 +1,899 @@
-<!DOCTYPE html>
+
+html_content = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSO Training Hub - Integrated Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Revamped PLFS 2025 - Slides 11-20</title>
     <style>
-        body { font-family: 'Inter', 'Noto Sans Devanagari', sans-serif; overflow: hidden; background: #0f172a; }
-        .slide { display: none; height: 100vh; width: 100vw; animation: fadeIn 0.4s ease-out; background: white; }
-        .slide.active { display: flex; flex-direction: column; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; }
-        .content-scroll { flex: 1; overflow-y: auto; padding: 2rem 4rem; }
-        .sidebar { position: fixed; left: -300px; top: 0; height: 100%; width: 300px; background: #1e293b; z-index: 200; transition: 0.3s; color: white; padding: 2rem; }
-        .sidebar.open { left: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 40px 60px;
+            background: white;
+            position: relative;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px 30px;
+            margin: -40px -60px 30px -60px;
+            border-bottom: 4px solid #f39c12;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #f39c12;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            border-left: 5px solid #f39c12;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            color: #2a5298;
+            margin: 20px 0 10px 0;
+        }
+        
+        .slide-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.6;
+            border-bottom: 1px solid #eee;
+        }
+        
+        li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #f39c12;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 5px solid #2a5298;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #ffe6e6;
+            border-left: 5px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.95em;
+        }
+        
+        th {
+            background: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        tr:hover {
+            background: #e8f4f8;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .column {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid #2a5298;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        button {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #f39c12;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: #f39c12;
+            transition: width 0.3s;
+            z-index: 1001;
+        }
+        
+        .checklist {
+            background: #f0f8ff;
+            border: 2px solid #2a5298;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist li:before {
+            content: "☐";
+            color: #2a5298;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
+        @media print {
+            .slide {
+                display: block !important;
+                page-break-after: always;
+                height: auto;
+            }
+            .nav-controls, .progress-bar {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div id="sidebar" class="sidebar shadow-2xl">
-        <div class="flex justify-between items-center mb-10">
-            <h3 class="font-bold text-xl text-blue-400">Source Files</h3>
-            <button onclick="toggleSidebar()" class="text-white text-2xl">&times;</button>
-        </div>
-        <ul class="space-y-4">
-            <li>
-                <a href="esigma.html" class="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-blue-600 transition">
-                    <i class="fas fa-external-link-alt text-sm"></i> e-SIGMA Portal
-                </a>
-            </li>
-            <li>
-                <a href="main.html" class="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-orange-600 transition">
-                    <i class="fas fa-external-link-alt text-sm"></i> PLFS 2025 (Main)
-                </a>
-            </li>
-            <li>
-                <a href="main 2.html" class="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-orange-600 transition">
-                    <i class="fas fa-external-link-alt text-sm"></i> PLFS 2025 (Slides 11-20)
-                </a>
-            </li>
-            <li>
-                <a href="nic nco.html" class="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg hover:bg-emerald-600 transition">
-                    <i class="fas fa-external-link-alt text-sm"></i> NIC & NCO Codes
-                </a>
-            </li>
-        </ul>
-        <div class="mt-20 p-4 bg-blue-900/30 rounded-xl border border-blue-500/30 text-xs text-slate-400 leading-relaxed">
-            <i class="fas fa-info-circle mr-1"></i> Use these links to open the original stand-alone HTML pages for specific data entry or deep-dives.
-        </div>
-    </div>
-
-    <div class="fixed top-0 left-0 h-1.5 bg-orange-500 z-[100] transition-all duration-300" id="progressBar" style="width: 0%"></div>
-
-    <button onclick="toggleSidebar()" class="fixed top-4 left-4 z-[150] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg hover:bg-blue-700 transition">
-        <i class="fas fa-link"></i>
-    </button>
-
-    <div id="presentation">
-        <div class="slide active" data-module="e-SIGMA">
-            <div class="gradient-header p-10 flex flex-col items-center justify-center h-full text-center">
-                <h1 class="text-6xl font-black mb-4 uppercase tracking-tighter">e-SIGMA Portal</h1>
-                <p class="text-xl opacity-80 mb-8">Dashboard, User Management & Task Allocation</p>
-                <div class="flex gap-4">
-                    <span class="px-4 py-1 bg-white/20 rounded-full text-sm">Task Monitoring</span>
-                    <span class="px-4 py-1 bg-white/20 rounded-full text-sm">FSU Tracking</span>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="presentation-container">
+        
+        <!-- Slide 11: Field Operations Block -->
+        <div class="slide active" data-slide="11">
+            <div class="slide-number">11</div>
+            <div class="slide-header">
+                <h1>Schedule 0.0PL – Field Operations Block</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Block Completion Requirements</h2>
+                
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Details Required</th>
+                        <th>Verification</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Enumerator</strong></td>
+                        <td>Name, Code, Signature</td>
+                        <td>Must match deployment records</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Supervisor</strong></td>
+                        <td>Name, Code, Signature</td>
+                        <td>Required for quality assurance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Commencement Date</strong></td>
+                        <td>Date listing began (DD/MM/YYYY)</td>
+                        <td>Must be within survey month</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Completion Date</strong></td>
+                        <td>Date listing completed</td>
+                        <td>Check for reasonable duration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Receipt Date</strong></td>
+                        <td>Date received at field office</td>
+                        <td>Track processing timeline</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scrutiny Date</strong></td>
+                        <td>Date of office verification</td>
+                        <td>Supervisor review mandatory</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Despatch Date</strong></td>
+                        <td>Date sent to data center</td>
+                        <td>Ensure timely transmission</td>
+                    </tr>
+                </table>
+                
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Time Recording</h3>
+                        <ul>
+                            <li><strong>Total Time:</strong> Hours spent on listing (whole numbers)</li>
+                            <li><strong>Enumerators:</strong> Number deployed (usually 1)</li>
+                            <li>Include travel time within FSU</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Remarks Column</h3>
+                        <ul>
+                            <li>Difficulties encountered</li>
+                            <li>Refusals and substitutions</li>
+                            <li>Boundary disputes</li>
+                            <li>Any unusual observations</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="slide" data-module="PLFS 2025">
-            <div class="bg-slate-900 text-white p-10 h-full flex flex-col justify-center items-center">
-                <h2 class="text-5xl font-bold mb-4">Revamped PLFS 2025</h2>
-                <div class="h-1 w-24 bg-orange-500 mb-6"></div>
-                <p class="text-2xl text-slate-400">Schedule 0.0PL & 10.4 Fundamentals</p>
+        
+        <!-- Slide 12: Schedule 0.0PL Summary -->
+        <div class="slide" data-slide="12">
+            <div class="slide-number">12</div>
+            <div class="slide-header">
+                <h1>Schedule 0.0PL – Summary</h1>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <strong>Core Purpose:</strong> Schedule 0.0PL is the foundation of PLFS sampling – ensuring scientific selection of representative households
+                </div>
+                
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li><strong>Foundational Document:</strong> All subsequent survey work depends on accurate 0.0PL listing</li>
+                    <li><strong>Timing:</strong> Fresh listing ONLY for new panels (first month of rotation)</li>
+                    <li><strong>Stratification Critical:</strong> SSS based on secondary+ education ensures educated households are adequately represented</li>
+                    <li><strong>Sample Size:</strong> Exactly 12 households per FSU (4+6+2 rural, 4+3+3+2 urban)</li>
+                    <li><strong>Quality Focus:</strong> Verify education levels, probe locked households, document all changes</li>
+                </ul>
+                
+                <div class="checklist">
+                    <h3>Pre-Transition Checklist (Before Schedule 10.4)</h3>
+                    <ul>
+                        <li>All 12 households selected and verified?</li>
+                        <li>SSS classification double-checked?</li>
+                        <li>Substitutions documented with reasons?</li>
+                        <li>Field operations block complete with signatures?</li>
+                        <li>Remarks column filled for anomalies?</li>
+                        <li>Office scrutiny completed?</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Transition:</strong> Once 0.0PL is complete and scrutinized, proceed to Schedule 10.4 First Visit for detailed employment data collection
+                </div>
             </div>
         </div>
-
-        <div class="slide" data-module="Classification">
-            <div class="bg-emerald-900 text-white p-10 h-full flex flex-col justify-center items-center">
-                <h2 class="text-5xl font-bold mb-4">NIC & NCO Codes</h2>
-                <p class="text-xl text-emerald-300 italic">"Where do you work?" vs "What do you do?"</p>
+        
+        <!-- Slide 13: Schedule 10.4 Overview -->
+        <div class="slide" data-slide="13">
+            <div class="slide-number">13</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 – Overview</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Employment & Unemployment Schedule</h2>
+                <div class="highlight-box">
+                    Primary instrument for collecting detailed labour force data from selected households
+                </div>
+                
+                <div class="two-column">
+                    <div class="column">
+                        <h3>First Visit (Month 1)</h3>
+                        <ul>
+                            <li><strong>Comprehensive Baseline:</strong> Full household roster</li>
+                            <li><strong>Usual Status:</strong> 365-day reference period</li>
+                            <li><strong>Current Weekly:</strong> 7-day activity details</li>
+                            <li><strong>Vocational Training:</strong> Detailed capture</li>
+                            <li><strong>Demographics:</strong> Complete education/attendance</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Revisits (Months 2-4)</h3>
+                        <ul>
+                            <li><strong>Change Tracking:</strong> Membership updates only</li>
+                            <li><strong>Current Weekly:</strong> Updated 7-day status</li>
+                            <li><strong>No Repeat:</strong> Usual status not re-collected</li>
+                            <li><strong>Efficient:</strong> Shorter questionnaire</li>
+                            <li><strong>Focus:</strong> Transitions and flows</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="info-box" style="margin-top: 20px;">
+                    <strong>Coverage:</strong> All members of 12 selected households per FSU | <strong>Frequency:</strong> 4 visits over 4 consecutive months per household
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-white/90 backdrop-blur shadow-2xl px-8 py-4 rounded-full border border-slate-200">
-        <button onclick="move(-1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
-            <i class="fas fa-chevron-left text-lg"></i>
-        </button>
-        <div class="text-center min-w-[150px]">
-            <span id="pageNum" class="text-xl font-bold text-slate-800">1</span>
-            <span class="text-slate-400 mx-1">/</span>
-            <span id="totalNum" class="text-slate-500 font-medium">3</span>
-            <div id="moduleLabel" class="text-[10px] uppercase tracking-widest text-blue-600 font-bold mt-1">e-SIGMA</div>
+        
+        <!-- Slide 14: Blocks 0 & 1 First Visit -->
+        <div class="slide" data-slide="14">
+            <div class="slide-number">14</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Blocks 0 & 1</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Block 0: Descriptive Identification</h3>
+                        <ul>
+                            <li>State Name and Code</li>
+                            <li>District Name and Code</li>
+                            <li>Village/Town Name</li>
+                            <li>Tehsil/Taluk/Block</li>
+                            <li>Landmark/Location details</li>
+                            <li>FSU identification</li>
+                        </ul>
+                        <div class="info-box">
+                            <strong>Source:</strong> Copy from Schedule 0.0PL Block 0
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>Block 1: Full Identification</h3>
+                        <ul>
+                            <li>Sample Number (from 0.0PL)</li>
+                            <li><strong>Sector:</strong> 1=Rural, 2=Urban</li>
+                            <li>NSS Region Code</li>
+                            <li>Stratum/Sub-stratum</li>
+                            <li>Sub-Unit (SU) details</li>
+                            <li>Second Stage Stratum (SSS)</li>
+                            <li>Frame Code & Survey Code</li>
+                            <li><strong>Month/Year:</strong> 01=Jan to 12=Dec</li>
+                            <li><strong>Panel Number</strong></li>
+                            <li><strong>Visit Number = 1</strong></li>
+                            <li>Response Code (1=Completed, etc.)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>Critical:</strong> Ensure Visit Number is marked as "1" for First Visit. Month codes: January=01, February=02, ..., December=12
+                </div>
+            </div>
         </div>
-        <button onclick="move(1)" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
-            <i class="fas fa-chevron-right text-lg"></i>
-        </button>
+        
+        <!-- Slide 15: Block 2 First Visit -->
+        <div class="slide" data-slide="15">
+            <div class="slide-number">15</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Block 2</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Field Operations Block</h2>
+                
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Entry Required</th>
+                        <th>Guidelines</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Enumerator</strong></td>
+                        <td>Name, Code, Signature</td>
+                        <td>Same as 0.0PL if possible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Supervisor</strong></td>
+                        <td>Name, Code, Signature</td>
+                        <td>Independent verification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Commencement</strong></td>
+                        <td>DD/MM/YYYY</td>
+                        <td>Date first household contacted</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Completion</strong></td>
+                        <td>DD/MM/YYYY</td>
+                        <td>Date last household completed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Time (Minutes)</strong></td>
+                        <td>Whole numbers only</td>
+                        <td>Actual canvassing time per hh</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Additional Sheets</strong></td>
+                        <td>Count if used</td>
+                        <td>For large households (>10 members)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Remarks</strong></td>
+                        <td>Text</td>
+                        <td>Refusals, callbacks, issues</td>
+                    </tr>
+                </table>
+                
+                <div class="highlight-box">
+                    <strong>Time Recording:</strong> Record actual canvassing time only (in whole minutes). Exclude travel time between households. Typical range: 30-90 minutes per household depending on size.
+                </div>
+                
+                <div class="info-box">
+                    <strong>Quality Indicator:</strong> Unusually short times (<20 min) or long times (>120 min) should be verified by supervisor
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 16: Block 3 First Visit -->
+        <div class="slide" data-slide="16">
+            <div class="slide-number">16</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Block 3</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Household Characteristics (Full Collection)</h2>
+                
+                <div class="three-column">
+                    <div class="column">
+                        <h3>Basic Info</h3>
+                        <ul>
+                            <li><strong>Household Size:</strong> Total members</li>
+                            <li><strong>Household Type:</strong>
+                                <br>• Rural: Self-employed, Regular wage, Casual labour, Others
+                                <br>• Urban: Self-employed, Regular wage, Casual labour, Others
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Social Characteristics</h3>
+                        <ul>
+                            <li><strong>Religion:</strong> Hindu, Muslim, Christian, Sikh, Buddhist, Jain, Others</li>
+                            <li><strong>Social Group:</strong> Scheduled Caste, Scheduled Tribe, OBC, Others</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Economic Indicators</h3>
+                        <ul>
+                            <li><strong>Consumer Expenditure:</strong> Usual monthly (exclude durables & unusual items)</li>
+                            <li><strong>Land:</strong> Possessed/leased (in hectares)</li>
+                            <li><strong>Monthly Income:</strong> Rent, pension, remittances (excluding wages)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>Important:</strong> These items are collected ONLY in First Visit. In Revisits, Block 3 is shaded/not canvassed except for household size updates.
+                </div>
+                
+                <div class="info-box">
+                    <strong>Expenditure Probe:</strong> Ask for usual monthly spending pattern, not just last month. Exclude major purchases (vehicles, jewelry) and unusual expenses (weddings, medical emergencies).
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 17: Block 4 First Visit -->
+        <div class="slide" data-slide="17">
+            <div class="slide-number">17</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Block 4</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Demographic Details (All Household Members)</h2>
+                
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                        <th>Codes/Notes</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Serial No.</strong></td>
+                        <td>Continuous numbering (01, 02...)</td>
+                        <td>Head usually 01</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Name</strong></td>
+                        <td>Full name of member</td>
+                        <td>Verify spelling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relation to Head</strong></td>
+                        <td>Self, Spouse, Child, Parent, etc.</td>
+                        <td>Use standard codes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gender</strong></td>
+                        <td>Male/Female/Other</td>
+                        <td>1=Male, 2=Female, 3=Other</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Age</strong></td>
+                        <td>Completed years</td>
+                        <td>For <1 year: 00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marital Status</strong></td>
+                        <td>Never married, Currently married, Widowed, etc.</td>
+                        <td>Codes 1-5</td>
+                    </tr>
+                    <tr>
+                        <td><strong>General Education</strong></td>
+                        <td>Highest level completed</td>
+                        <td>Codes 01-11 (Literate to Post-grad)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Technical Education</strong></td>
+                        <td>Diploma/Degree in technical field</td>
+                        <td>If applicable</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Class/Grade</strong></td>
+                        <td>Current level if studying</td>
+                        <td>For students</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Years of Education</strong></td>
+                        <td>Total years completed</td>
+                        <td>Verify consistency</td>
+                    </tr>
+                </table>
+                
+                <div class="highlight-box">
+                    <strong>Age 0-29:</strong> Capture attendance status (enrolled, not enrolled, never enrolled)<br>
+                    <strong>Age 12-59:</strong> Capture vocational training details (in Block 4.1)
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: Block 4.1 First Visit -->
+        <div class="slide" data-slide="18">
+            <div class="slide-number">18</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Block 4.1</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Vocational Training Details (Age 12-59 with Training)</h2>
+                
+                <div class="info-box">
+                    <strong>Eligibility:</strong> Only for members aged 12-59 years who received vocational training (Code 1 in Block 4)
+                </div>
+                
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                        <th>Codes/Details</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Field of Training</strong></td>
+                        <td>Broad discipline area</td>
+                        <td>01-21+99 (Agriculture, Engineering, IT, Medical, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duration</strong></td>
+                        <td>Length of training</td>
+                        <td>Less than 3 months, 3-6 months, 6-12 months, 1-2 years, >2 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Type of Institution</strong></td>
+                        <td>Where training received</td>
+                        <td>Govt ITI, Private ITI, Company, NGO, Other</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Funding Source</strong></td>
+                        <td>Who paid for training</td>
+                        <td>Self, Employer, Govt scheme, Scholarship, Other</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Certifying Body</strong></td>
+                        <td>Recognition authority</td>
+                        <td>NCVET list, Sector Skill Council, University, etc.</td>
+                    </tr>
+                </table>
+                
+                <div class="warning-box">
+                    <strong>Multiple Trainings:</strong> If member received multiple trainings, record details of the <strong>most recent</strong> or <strong>most relevant</strong> training only.
+                </div>
+                
+                <div class="highlight-box">
+                    <strong>NCVET Alignment:</strong> Certifying body codes align with National Council for Vocational Education and Training (NCVET) recognized entities. Verify from current NCVET list.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 19: Blocks 5.1 & 5.2 First Visit -->
+        <div class="slide" data-slide="19">
+            <div class="slide-number">19</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Blocks 5.1 & 5.2</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Usual Activity Status (365 Days Reference)</h2>
+                
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Block 5.1: Principal Activity</h3>
+                        <ul>
+                            <li><strong>Status Code:</strong> 11-51 (Working), 81-97 (Not working)
+                                <br>• 11=Worked in hh enterprise
+                                <br>• 21=Worked as helper
+                                <br>• 31=Regular salaried
+                                <br>• 41=Casual wage public works
+                                <br>• 51=Casual wage other
+                                <br>• 81=Unemployed
+                                <br>• 91-97=Not in labour force
+                            </li>
+                            <li><strong>Industry (NIC 5-digit):</strong> Detailed activity code</li>
+                            <li><strong>Occupation (NCO 3-digit):</strong> Type of work</li>
+                            <li><strong>Subsidiary Flag:</strong> Yes/No</li>
+                            <li><strong>Location:</strong> Home/away</li>
+                            <li><strong>Enterprise Type:</strong> Proprietary, Partnership, etc.</li>
+                            <li><strong>Contract Type:</strong> Written/oral/none</li>
+                            <li><strong>Social Security:</strong> PF, pension, etc.</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Block 5.2: Subsidiary Activity</h3>
+                        <ul>
+                            <li><strong>Condition:</strong> Only if "Yes" in Block 5.1 subsidiary flag</li>
+                            <li><strong>Definition:</strong> Secondary activity fetching ≥20% of total time</li>
+                            <li><strong>Same Codes:</strong> Status, Industry, Occupation</li>
+                            <li><strong>Time Spent:</strong> Hours/days in subsidiary work</li>
+                        </ul>
+                        
+                        <div class="info-box" style="margin-top: 20px;">
+                            <strong>Reference Period:</strong> 365 days preceding survey date (usual status)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <strong>Principal Activity Determination:</strong> Activity in which person spent <strong>major time</strong> during the 365 days. For equal time, use current weekly status as tie-breaker.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 20: Block 5.3 First Visit -->
+        <div class="slide" data-slide="20">
+            <div class="slide-number">20</div>
+            <div class="slide-header">
+                <h1>Schedule 10.4 First Visit – Block 5.3</h1>
+            </div>
+            <div class="slide-content">
+                <h2>Follow-up Questions (Age 5+ Years)</h2>
+                <div class="info-box">
+                    <strong>Target:</strong> All members aged 5 years and above | <strong>Purpose:</strong> Capture additional labour market details for unemployed and out-of-labour-force persons
+                </div>
+                
+                <table>
+                    <tr>
+                        <th>Question</th>
+                        <th>Details Captured</th>
+                        <th>Who to Ask</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Prior 365 Days Work</strong></td>
+                        <td>Did person work at all in last year? (Yes/No)</td>
+                        <td>All 5+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duration of Work</strong></td>
+                        <td>If yes, how many months worked?</td>
+                        <td>Those who worked</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Job Search</strong></td>
+                        <td>Looked for work? Methods used?</td>
+                        <td>Unemployed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unemployment Spell</strong></td>
+                        <td>Duration of current unemployment</td>
+                        <td>Unemployed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reasons for Not Working</strong></td>
+                        <td>Attending education, domestic duties, retirement, illness, etc.</td>
+                        <td>Out of labour force</td>
+                    </tr>
+                </table>
+                
+                <div class="two-column" style="margin-top: 20px;">
+                    <div class="column">
+                        <h3>For Unemployed Persons</h3>
+                        <ul>
+                            <li>Actively seeking work?</li>
+                            <li>Available for work?</li>
+                            <li>Methods of job search</li>
+                            <li>Duration of search</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>For Out of Labour Force</h3>
+                        <ul>
+                            <li>Student (attending institution)</li>
+                            <li>Domestic duties only</li>
+                            <li>Retired/pensioner</li>
+                            <li>Rentier/recipient of remittance</li>
+                            <li>Illness/disability</li>
+                            <li>Other reasons</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
-
+    
+    <div class="nav-controls">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div class="slide-counter">
+            <span id="currentSlide">11</span> / <span id="totalSlides">20</span>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+    
     <script>
-        let current = 0;
-        const slides = document.querySelectorAll('.slide');
-        const progress = document.getElementById('progressBar');
-        const pageNum = document.getElementById('pageNum');
-        const totalNum = document.getElementById('totalNum');
-        const moduleLabel = document.getElementById('moduleLabel');
-
-        totalNum.innerText = slides.length;
-
-        function update() {
-            slides.forEach((s, i) => s.classList.toggle('active', i === current));
-            const activeSlide = slides[current];
-            pageNum.innerText = current + 1;
-            moduleLabel.innerText = activeSlide.dataset.module;
-            progress.style.width = ((current + 1) / slides.length) * 100 + '%';
+        let currentSlide = 11;
+        const totalSlides = 20;
+        
+        function updateSlide() {
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            document.querySelector(`[data-slide="${currentSlide}"]`).classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 11;
+            document.getElementById('nextBtn').disabled = currentSlide === 20;
+            const progress = ((currentSlide - 10) / 10) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
         }
-
-        function move(dir) {
-            current = Math.max(0, Math.min(slides.length - 1, current + dir));
-            update();
+        
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 11 && newSlide <= 20) {
+                currentSlide = newSlide;
+                updateSlide();
+            }
         }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-
+        
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') move(1);
-            if (e.key === 'ArrowLeft') move(-1);
-            if (e.key === 'Escape') toggleSidebar();
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
         });
+        
+        updateSlide();
     </script>
 </body>
 </html>
