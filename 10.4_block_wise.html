@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLFS Schedule 10.4 - Field Interview Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .slide {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.6s ease-out;
+            min-height: 80vh;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 25px;
+            margin: -40px -40px 30px -40px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+        
+        .slide-number {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .slide-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .slide-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: #2a5298;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+            transition: transform 0.3s;
+        }
+        
+        .question-box:hover {
+            transform: translateX(5px);
+            background: #e9ecef;
+        }
+        
+        .question-label {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .option {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: #f1f3f4;
+            border-radius: 6px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .code {
+            background: #2a5298;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #333;
+            padding: 0 15px;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box strong {
+            color: #856404;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .highlight {
+            background: #d4edda;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #155724;
+            font-weight: 600;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+        }
+        
+        th {
+            background: #2a5298;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .activity-day {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2196f3;
+        }
+        
+        .field-input {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        
+        @media print {
+            .slide {
+                display: block !important;
+                page-break-after: always;
+                box-shadow: none;
+                margin: 0;
+            }
+            .navigation {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .slide {
+                padding: 20px;
+            }
+            .slide-header {
+                margin: -20px -20px 20px -20px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <div class="slide-header">
+                <div class="slide-number">PLFS 2025-26</div>
+                <div class="slide-title">Schedule 10.4: Employment & Unemployment</div>
+                <div class="slide-subtitle">First Visit - Field Interview Guide</div>
+            </div>
+            
+            <div style="text-align: center; padding: 60px 20px;">
+                <div style="font-size: 80px; margin-bottom: 30px;">📋</div>
+                <h2 style="color: #2a5298; margin-bottom: 20px;">Field Enumerator's Interview Guide</h2>
+                <p style="font-size: 18px; color: #666; line-height: 1.8; max-width: 600px; margin: 0 auto;">
+                    This presentation guides you through collecting data from informants for the Periodic Labour Force Survey.
+                    <br><br>
+                    <strong>Survey Period:</strong> January 2026 - December 2026<br>
+                    <strong>Schedule:</strong> 10.4 (First Visit)<br>
+                    <strong>Reference Period:</strong> Last 7 days for CWS
+                </p>
+                
+                <div class="info-box" style="margin-top: 40px; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    <strong>Instructions:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Use this guide to ask questions to the informant</li>
+                        <li>Record responses in the CAPI application</li>
+                        <li>Verify all entries before proceeding</li>
+                        <li>Total time should be approximately 30 minutes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Field Operations -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 2</div>
+                <div class="slide-title">Particulars of Field Operations</div>
+                <div class="slide-subtitle">To be filled by Survey Enumerator</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">📊 Pre-Survey Information</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.1</div>
+                    <div class="question-text">Number of survey enumerators in the team who canvassed the schedule</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> One</div>
+                        <div class="option"><span class="code">2</span> Two</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.1(a)</div>
+                    <div class="question-text">Name of Survey Enumerator (SE)</div>
+                    <div class="field-input">Enter: Sanjay Soni (as per your login)</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.2(i)</div>
+                    <div class="question-text">Date of Survey</div>
+                    <div class="field-input">Auto-filled: 07/03/2026 (Current System Date)</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.4</div>
+                    <div class="question-text">Total time taken to canvass the schedule (in minutes)</div>
+                    <div class="field-input">Example: 30 minutes</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.4.1</div>
+                    <div class="question-text">Whether canvassed through telephone?</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> Yes</div>
+                        <div class="option"><span class="code">2</span> No</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">👤 Informant Details</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.5</div>
+                    <div class="question-text">Name of Informant</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> Jagdish Saini</div>
+                        <div class="option"><span class="code">2</span> [Other household member]</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q2.6</div>
+                    <div class="question-text">Response Code</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> Informant: co-operative and capable</div>
+                        <div class="option"><span class="code">2</span> Co-operative but not capable</div>
+                        <div class="option"><span class="code">3</span> Busy</div>
+                        <div class="option"><span class="code">4</span> Reluctant</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Household Characteristics -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 3</div>
+                <div class="slide-title">Household Characteristics</div>
+                <div class="slide-subtitle">General household information</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">🏠 Basic Household Information</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.1</div>
+                    <div class="question-text">How many persons are in the household, who are normally living together for six months or more or are expected to stay for six months or more and taking food from a common kitchen?</div>
+                    <div class="field-input">Example: 3 persons</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.2</div>
+                    <div class="question-text">Household Type</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> Self-employed in agriculture</div>
+                        <div class="option"><span class="code">2</span> Self-employed in non-agriculture</div>
+                        <div class="option"><span class="code">3</span> Regular wage/salary earning</div>
+                        <div class="option"><span class="code">4</span> Casual labour in agriculture</div>
+                        <div class="option"><span class="code">5</span> Casual labour in non-agriculture</div>
+                        <div class="option"><span class="code">9</span> Others</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.3</div>
+                    <div class="question-text">Religion of the household</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> Hinduism</div>
+                        <div class="option"><span class="code">2</span> Islam</div>
+                        <div class="option"><span class="code">3</span> Christianity</div>
+                        <div class="option"><span class="code">4</span> Sikhism</div>
+                        <div class="option"><span class="code">5</span> Jainism</div>
+                        <div class="option"><span class="code">6</span> Buddhism</div>
+                        <div class="option"><span class="code">7</span> Zoroastrianism</div>
+                        <div class="option"><span class="code">9</span> Others</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.4</div>
+                    <div class="question-text">Social Group</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">1</span> Scheduled Tribe</div>
+                        <div class="option"><span class="code">2</span> Scheduled Caste</div>
+                        <div class="option"><span class="code">3</span> Other Backward Class</div>
+                        <div class="option"><span class="code">9</span> Others</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Household Expenditure -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 3 (Continued)</div>
+                <div class="slide-title">Household Consumer Expenditure</div>
+                <div class="slide-subtitle">Monthly and annual expenditure details</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">💰 Expenditure Questions (Ask for amounts in Rupees)</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.5.1 (A)</div>
+                    <div class="question-text">What is the usual consumer expenditure in a month for household purposes out of purchase of goods and services excluding footwear, clothing etc?</div>
+                    <div class="field-input">Example: ₹23,000</div>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Include: Regular monthly expenditure, recurring expenses (telephone, electricity bills apportioned monthly)<br>
+                        Exclude: Durable goods, unusual expenditures (ceremonies, hospitalization), clothing/footwear
+                    </small>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.5.2 (B)</div>
+                    <div class="question-text">What is the imputed value of usual consumption in a month from home grown stock like rice, cereals, pulses, vegetables, milk, firewood, chips, cow dung, etc?</div>
+                    <div class="field-input">Example: ₹0</div>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Record at ex-farm/ex-factory price if home grown stocks used regularly
+                    </small>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q3.5.3 (C)</div>
+                    <div class="question-text">What is the imputed value of usual consumption in a month from wages in kind, free collection, gifts, etc?</div>
+                    <div class="field-input">Example: ₹3,000</div>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Include: Free electricity, telephone, medical services, food-grains, meals, mid-day meals (at local retail prices)
+                    </small>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="question-box">
+                        <div class="question-label">Q3.5.4 (D)</div>
+                        <div class="question-text">Expenditure on clothing, footwear during last 365 days</div>
+                        <div class="field-input">Example: ₹20,000</div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-label">Q3.5.5 (E)</div>
+                        <div class="question-text">Expenditure on household durables during last 365 days</div>
+                        <div class="field-input">Example: ₹4,50,000</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Auto-Calculated (Q3.5.6):</strong> Usual monthly household consumer expenditure = [A + B + C + (D+E)/12]<br>
+                    <div class="field-input">Example: [23000 + 0 + 3000 + (20000+450000)/12] = ₹65,167</div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">🌾 Land Particulars</div>
+                
+                <div class="grid-2">
+                    <div class="question-box">
+                        <div class="question-label">Q3.6.1</div>
+                        <div class="question-text">Land possessed as on date of survey</div>
+                        <div class="response-options">
+                            <div class="option"><span class="code">01</span> Less than 0.01 acre</div>
+                            <div class="option"><span class="code">02</span> 0.01-0.05 acre</div>
+                            <div class="option"><span class="code">03</span> 0.05-0.5 acre</div>
+                            <div class="option"><span class="code">04</span> 0.5-1.0 acre</div>
+                            <div class="option"><span class="code">05</span> 1.0-2.5 acre</div>
+                            <div class="option"><span class="code">06</span> 2.5-5.0 acre</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-label">Q3.6.2</div>
+                        <div class="question-text">Land leased-out as on date of survey</div>
+                        <div class="response-options">
+                            <div class="option"><span class="code">99</span> Not leased-out any land</div>
+                            <div class="option"><span class="code">01-12</span> Area codes (same as above)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Contact Information -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 1 (Item 22)</div>
+                <div class="slide-title">Identification & Contact Details</div>
+                <div class="slide-subtitle">Sample household contact information</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">📞 Telephone Numbers</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q22.1</div>
+                    <div class="question-text">Mobile Number</div>
+                    <div class="field-input">Example: 9418047854</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q22.2</div>
+                    <div class="question-text">Alternate Mobile Number</div>
+                    <div class="field-input">Enter if available, else leave blank</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Q22.3</div>
+                    <div class="question-text">Land Line (with STD code)</div>
+                    <div class="field-input">Format: (STD) Number - Example: (011) 23456789</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>Note:</strong> For landline numbers, add the STD code in brackets without zero. 
+                These contact details are crucial for revisit schedules in urban areas.
+            </div>
+        </div>
+
+        <!-- Slide 6: Current Weekly Activity - Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 6</div>
+                <div class="slide-title">Current Weekly Activity Particulars</div>
+                <div class="slide-subtitle">Reference Week: Last 7 days preceding the survey date</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">📅 Reference Week Structure</div>
+                
+                <div class="info-box">
+                    <strong>Important:</strong> Collect information for each day of the reference week (7 days). 
+                    For each household member, record activity status, hours worked, industry, and earnings.
+                </div>
+                
+                <div class="activity-day">
+                    <strong>Day 1 (1st day):</strong> Most recent day of the reference week<br>
+                    <strong>Day 7 (7th day):</strong> Earliest day of the reference week
+                </div>
+                
+                <div class="section-title">📝 Information to Collect for Each Day</div>
+                
+                <div class="grid-2">
+                    <div class="question-box">
+                        <div class="question-label">For Status Codes 11-51</div>
+                        <div class="question-text">Hours actually worked</div>
+                        <div class="field-input">Example: 8 hours</div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-label">For Status Codes 61,62,71,72</div>
+                        <div class="question-text">Hours would have worked</div>
+                        <div class="field-input">Example: 8 hours (if worked)</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Total Hours Actually Worked (Item 7.1)</div>
+                    <div class="question-text">Considering all work performed during the day</div>
+                    <div class="field-input">Sum of all working hours for the day</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Hours Available for Additional Work (Item 8.1)</div>
+                    <div class="question-text">If available for additional work, hours available for such work during the day</div>
+                    <div class="field-input">Example: 0 (if not available)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Activity Status Codes -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 6 (Codes)</div>
+                <div class="slide-title">Activity Status Codes - Reference Week</div>
+                <div class="slide-subtitle">Codes for Column 4 (Status)</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="code">11</span></td>
+                                <td>Worked in HH enterprise (self-employed): Own account worker</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code">12</span></td>
+                                <td>Worked in HH enterprise (self-employed): Employer</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code">21</span></td>
+                                <td>Worked as helper in HH enterprise (Contributing Family Worker)</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code">31</span></td>
+                                <td>Worked as regular salaried/wage employee</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code">41</span></td>
+                                <td>Worked as casual wage labour in public works (other than MGNREG)</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code">42</span></td>
+                                <td>Worked as casual wage labour in MGNREG works</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code">51</span></td>
+                                <td>Worked as casual wage labour in other types of work</td>
+                                <td>Working</td>
+                            </tr>
+                            <tr style="background: #fff3cd;">
+                                <td><span class="code">61</span></td>
+                                <td>Had work in HH enterprise but did not work due to: sickness</td>
+                                <td>Not working</td>
+                            </tr>
+                            <tr style="background: #fff3cd;">
+                                <td><span class="code">62</span></td>
+                                <td>Had work in HH enterprise but did not work due to: other reasons</td>
+                                <td>Not working</td>
+                            </tr>
+                            <tr style="background: #fff3cd;">
+                                <td><span class="code">71</span></td>
+                                <td>Had regular salaried/wage employment but did not work due to: sickness</td>
+                                <td>Not working</td>
+                            </tr>
+                            <tr style="background: #fff3cd;">
+                                <td><span class="code">72</span></td>
+                                <td>Had regular salaried/wage employment but did not work due to: other reasons</td>
+                                <td>Not working</td>
+                            </tr>
+                            <tr style="background: #f8d7da;">
+                                <td><span class="code">81</span></td>
+                                <td>Sought work</td>
+                                <td>Unemployed</td>
+                            </tr>
+                            <tr style="background: #f8d7da;">
+                                <td><span class="code">82</span></td>
+                                <td>Did not seek but was available for work</td>
+                                <td>Unemployed</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td><span class="code">91</span></td>
+                                <td>Attended educational institution</td>
+                                <td>Out of labour force</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td><span class="code">92</span></td>
+                                <td>Attended domestic duties only</td>
+                                <td>Out of labour force</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td><span class="code">93</span></td>
+                                <td>Attended domestic duties + free collection of goods, sewing, etc.</td>
+                                <td>Out of labour force</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td><span class="code">94</span></td>
+                                <td>Rentiers, pensioners, remittance recipients, etc.</td>
+                                <td>Out of labour force</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td><span class="code">95</span></td>
+                                <td>Not able to work due to disability</td>
+                                <td>Out of labour force</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td><span class="code">97</span></td>
+                                <td>Others (including begging, prostitution, etc.)</td>
+                                <td>Out of labour force</td>
+                            </tr>
+                            <tr style="background: #d4edda;">
+                                <td><span class="code">98</span></td>
+                                <td>Did not work due to temporary sickness (casual workers only)</td>
+                                <td>Special</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Day-wise Activity Entry -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 6 (Daily Entry)</div>
+                <div class="slide-title">Daily Activity Entry Format</div>
+                <div class="slide-subtitle">Items 3.1 to 3.7 - Day-wise particulars</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">📝 Questions to Ask for Each Day</div>
+                
+                <div class="activity-day">
+                    <strong>For each day of the reference week, ask:</strong><br><br>
+                    <em>"Did [Name] do any work yesterday/the day before for pay, profit or family gain?"</em><br><br>
+                    If YES: <em>"How many hours did [Name] work?"</em><br>
+                    If NO: <em>"Why didn't [Name] work? Was it due to sickness, other reasons, or was there no work available?"</em>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="question-box">
+                        <div class="question-label">Item 5.1 / 5.2</div>
+                        <div class="question-text">Industry (2-digit NIC-2025 code)</div>
+                        <div class="field-input">Example: 84 (Public Administration)</div>
+                        <small>Ask: "What kind of work did you do? What was the nature of the business/industry?"</small>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-label">Item 6.1 / 6.2</div>
+                        <div class="question-text">Hours actually worked / would have worked</div>
+                        <div class="field-input">Example: 8 hours</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Item 7.1</div>
+                    <div class="question-text">Total hours actually worked considering all work performed during the day</div>
+                    <div class="field-input">Sum of hours from all activities</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Item 8.1</div>
+                    <div class="question-text">If available for additional work, hours available for such work during the day</div>
+                    <div class="field-input">Example: 0 (if fully occupied or not available)</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Item 9.1 / 9.2</div>
+                    <div class="question-text">For codes 41, 42, 51 in column 4: Wage earnings (received/receivable) for the work (Rs.)</div>
+                    <div class="field-input">Daily wage amount for casual labour</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Current Weekly Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Block 6 (Summary)</div>
+                <div class="slide-title">Current Weekly Activity Summary</div>
+                <div class="slide-subtitle">Items 4-10 - Consolidated information</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">📊 Weekly Summary Questions</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Item 4</div>
+                    <div class="question-text">Total hours actually worked during the week / hours available for additional work</div>
+                    <div class="field-input">Auto-sum of Items 3.1 to 3.7</div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Item 5</div>
+                    <div class="question-text">Current Weekly Status (Code)</div>
+                    <div class="response-options">
+                        <div class="option"><span class="code">11-51</span> Working (Employed)</div>
+                        <div class="option"><span class="code">61-72</span> Had work but did not work</div>
+                        <div class="option"><span class="code">81-82</span> Unemployed</div>
+                        <div class="option"><span class="code">91-97</span> Out of Labour Force</div>
+                    </div>
+                    <small>Determined based on majority time criterion or priority rules</small>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="question-box">
+                        <div class="question-label">Item 6</div>
+                        <div class="question-text">Industry (2-digit NIC-2025 code)</div>
+                        <div class="field-input">Example: 84</div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-label">Item 7</div>
+                        <div class="question-text">Occupation (3-digit NCO-2015 code)</div>
+                        <div class="field-input">Example: 111 (Assistant Commissioner)</div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Item 8</div>
+                    <div class="question-text">Description of the industry-occupation</div>
+                    <div class="field-input">Example: Activities of public administration at state level - Assistant Commissioner</div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="question-box">
+                        <div class="question-label">Item 9</div>
+                        <div class="question-text">For codes 31, 71, 72: Earnings during preceding calendar month (Rs.)</div>
+                        <div class="field-input">Example: ₹1,19,000</div>
+                        <small>For regular salaried/wage employees</small>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-label">Item 10</div>
+                        <div class="question-text">For codes 11, 12, 61, 62: Gross earning during last 30 days from self-employment (Rs.)</div>
+                        <div class="field-input">Amount from self-employment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Industry and Occupation Codes -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Reference</div>
+                <div class="slide-title">NIC-2025 & NCO-2015 Codes</div>
+                <div class="slide-subtitle">Common codes for classification</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">🏭 NIC-2025 (2-Digit Industry Codes)</div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Industry Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>01-03</td><td>Agriculture, forestry and fishing</td></tr>
+                            <tr><td>05-09</td><td>Mining and quarrying</td></tr>
+                            <tr><td>10-33</td><td>Manufacturing</td></tr>
+                            <tr><td>35</td><td>Electricity, gas, steam and air conditioning supply</td></tr>
+                            <tr><td>36-39</td><td>Water supply; sewerage, waste management</td></tr>
+                            <tr><td>41-43</td><td>Construction</td></tr>
+                            <tr><td>45-47</td><td>Wholesale and retail trade</td></tr>
+                            <tr><td>49-53</td><td>Transportation and storage</td></tr>
+                            <tr><td>55-56</td><td>Accommodation and food service activities</td></tr>
+                            <tr><td>58-63</td><td>Information and communication</td></tr>
+                            <tr><td>64-66</td><td>Financial and insurance activities</td></tr>
+                            <tr><td>68</td><td>Real estate activities</td></tr>
+                            <tr><td>69-75</td><td>Professional, scientific and technical activities</td></tr>
+                            <tr><td>77-82</td><td>Administrative and support service activities</td></tr>
+                            <tr><td style="background: #d4edda;"><strong>84</strong></td><td style="background: #d4edda;"><strong>Public administration and defence (Example from data)</strong></td></tr>
+                            <tr><td>85</td><td>Education</td></tr>
+                            <tr><td>86-88</td><td>Human health and social work activities</td></tr>
+                            <tr><td>90-93</td><td>Arts, entertainment and recreation</td></tr>
+                            <tr><td>94-96</td><td>Other service activities</td></tr>
+                            <tr><td>97-98</td><td>Activities of households as employers</td></tr>
+                            <tr><td>99</td><td>Activities of extraterritorial organizations</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="section-title" style="margin-top: 30px;">👔 NCO-2015 (3-Digit Occupation Codes)</div>
+                
+                <div class="info-box">
+                    <strong>Note:</strong> Occupation codes are detailed. Example from your data shows <strong>111</strong> for Assistant Commissioner level positions in public administration. Refer to full NCO-2015 manual for specific codes.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Final Checks -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">Completion</div>
+                <div class="slide-title">Final Checks & Submission</div>
+                <div class="slide-subtitle">Quality control before saving</div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">✅ Verification Checklist</div>
+                
+                <div class="question-box">
+                    <div class="question-label">Block 7</div>
+                    <div class="question-text">Remarks by Survey Enumerator (SE)</div>
+                    <div class="field-input">Example: "Time taken to canvassing the schedule is confirmed."</div>
+                    <small>Add any special observations, difficulties faced, or clarifications needed</small>
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-label">Block 8</div>
+                    <div class="question-text">Comments by Supervisory Officer(s)</div>
+                    <div class="field-input">To be filled by supervisor during inspection</div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Before Saving/Submitting:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px; line-height: 2;">
+                        <li>Verify all household members are listed in Block 4</li>
+                        <li>Check that sum of hours worked equals total hours (Item 4)</li>
+                        <li>Ensure earnings data is entered for applicable status codes</li>
+                        <li>Confirm NIC and NCO codes are correctly entered</li>
+                        <li>Validate mobile number is correct for revisit purposes</li>
+                        <li>Check auto-calculated fields (MPCE) are reasonable</li>
+                        <li>Ensure no blank mandatory fields</li>
+                    </ul>
+                </div>
+                
+                <div class="content-section" style="text-align: center; margin-top: 40px;">
+                    <div style="font-size: 60px; margin-bottom: 20px;">✓</div>
+                    <h3 style="color: #2a5298;">Survey Complete!</h3>
+                    <p style="color: #666; margin-top: 10px;">
+                        Click <strong>Save</strong> to store the data<br>
+                        Click <strong>Print</strong> for physical record if required
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Previous</button>
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">11</span>
+        </div>
+        <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Next →</button>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            document.getElementById('currentSlide').textContent = index + 1;
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+        }
+        
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        }
+        
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
