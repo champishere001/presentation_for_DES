@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSO Training Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+body{
+    background:#0f172a;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.module-card{
+    transition:0.3s;
+}
+
+.module-card:hover{
+    transform:translateY(-6px);
+}
+</style>
+
+</head>
+
+<body class="text-white">
+
+<div class="min-h-screen flex flex-col items-center justify-center p-10">
+
+<h1 class="text-5xl font-bold mb-10 text-center">
+NSO Master Dashboard
+</h1>
+
+<div class="grid md:grid-cols-3 gap-8 max-w-6xl">
+
+<a href="esigma.html" class="module-card bg-blue-700 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-desktop text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">e-SIGMA Portal</h2>
+<p class="text-sm opacity-80 mt-2">User roles & monitoring</p>
+</a>
+
+<a href="main.html" class="module-card bg-orange-600 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-file-contract text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">PLFS Main</h2>
+<p class="text-sm opacity-80 mt-2">Schedule 0.0PL & 10.4</p>
+</a>
+
+<a href="main_2.html" class="module-card bg-indigo-600 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-layer-group text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">PLFS Main 2</h2>
+<p class="text-sm opacity-80 mt-2">Slides 11-20</p>
+</a>
+
+<a href="main_3.html" class="module-card bg-violet-600 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-list-ol text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">PLFS Main 3</h2>
+<p class="text-sm opacity-80 mt-2">Slides 21-30</p>
+</a>
+
+<a href="0.0_10.4.html" class="module-card bg-emerald-600 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-table text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">0.0 & 10.4 FV</h2>
+<p class="text-sm opacity-80 mt-2">First Visit Schedule</p>
+</a>
+
+<a href="10.4_RV_block_wise.html" class="module-card bg-pink-600 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-th text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">10.4 RV</h2>
+<p class="text-sm opacity-80 mt-2">Revisit Block Wise</p>
+</a>
+
+<a href="nic_nco.html" class="module-card bg-green-700 p-8 rounded-xl text-center shadow-xl">
+<i class="fas fa-tags text-4xl mb-4"></i>
+<h2 class="text-2xl font-bold">NIC & NCO Codes</h2>
+<p class="text-sm opacity-80 mt-2">Industry & Occupation Codes</p>
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
